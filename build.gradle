@@ -1,12 +1,46 @@
+buildscript {
+    ext {
+        springBootVersion = '2.7.0'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.22.2')
+    }
+}
+
+
 plugins {
     id 'org.springframework.boot' version '2.7.0'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'com.palantir.docker' version('0.22.2')
 }
 
-group = 'br.com.gui'
+group = 'guirodg'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
+
+bootJar {
+    baseName('aws-local-01')
+    version('1.0.0')
+}
+
+task unpack(type: Copy) {
+    dependsOn bootJar
+    from(zipTree(tasks.bootJar.outputs.files.singleFile))
+    into("build/dependency")
+}
+
+docker {
+    name "${project.group}/${bootJar.getBaseName()}"
+    tags("${bootJar.getVersion()}")
+    copySpec.from(tasks.unpack.outputs).into("dependency")
+    buildArgs(['DEPENDENCY': "dependency"])
+}
+
 
 repositories {
     mavenCentral()
