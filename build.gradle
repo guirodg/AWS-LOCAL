@@ -55,6 +55,11 @@ dependencies {
     implementation 'org.projectlombok:lombok:1.18.24'
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    //	JPA e Connector DB //
+    implementation 'org.springframework.data:spring-data-jpa:2.7.0'
+    implementation 'org.mariadb.jdbc:mariadb-java-client:3.0.5'
+
 }
 
 tasks.named('test') {
