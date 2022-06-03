@@ -1,14 +1,16 @@
 package br.com.gui.aws_app01.model;
 
+import br.com.gui.aws_app01.enums.EventType;
+
 public class Envelop {
-  private String eventType;
+  private EventType eventType;
   private String data;
 
-  public String getEventType() {
+  public EventType getEventType() {
     return eventType;
   }
 
-  public void setEventType(String eventType) {
+  public void setEventType(EventType eventType) {
     this.eventType = eventType;
   }
 

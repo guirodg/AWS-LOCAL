@@ -1,7 +1,9 @@
 package br.com.gui.aws_app01.controller;
 
+import br.com.gui.aws_app01.enums.EventType;
 import br.com.gui.aws_app01.model.Product;
 import br.com.gui.aws_app01.repository.ProductRepository;
+import br.com.gui.aws_app01.service.ProductPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +16,12 @@ public class ProductController {
   @Autowired
   private final ProductRepository productRepository;
 
-  public ProductController(ProductRepository productRepository) {
+  @Autowired
+  private final ProductPublisher productPublisher;
+
+  public ProductController(ProductRepository productRepository, ProductPublisher productPublisher) {
     this.productRepository = productRepository;
+    this.productPublisher = productPublisher;
   }
 
   @GetMapping
@@ -34,6 +40,7 @@ public class ProductController {
   @PostMapping()
   public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
     final var productCreated = productRepository.save(product);
+    productPublisher.publishProductEvent(productCreated, EventType.PRODUCT_CREATED, "Gui");
     return new ResponseEntity<>(productCreated, HttpStatus.CREATED);
   }
 
@@ -43,6 +50,7 @@ public class ProductController {
     if (existsProduct) {
       product.setId(id);
       final var productUpdated = productRepository.save(product);
+      productPublisher.publishProductEvent(productUpdated, EventType.PRODUCT_UPDATE, "Joao");
       return new ResponseEntity<>(productUpdated, HttpStatus.OK);
     } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
   }
@@ -53,6 +61,7 @@ public class ProductController {
     final var productIsPresent = optProduct.isPresent();
     if (productIsPresent) {
       productRepository.delete(optProduct.get());
+      productPublisher.publishProductEvent(optProduct.get(), EventType.PRODUCT_DELETED, "Maria");
       return new ResponseEntity<>(optProduct.get(), HttpStatus.OK);
     }
 
