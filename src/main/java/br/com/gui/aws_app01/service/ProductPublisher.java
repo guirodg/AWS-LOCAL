@@ -40,7 +40,7 @@ public class ProductPublisher {
     try {
       envelop.setData(objectMapper.writeValueAsString(productEvent));
 
-      snsClient.publish(productEventsTopic.getTopicArn(), objectMapper.writeValueAsString(eventType));
+      snsClient.publish(productEventsTopic.getTopicArn(), objectMapper.writeValueAsString(envelop));
 
     } catch (JsonProcessingException e) {
       log.error("Falha ao criar productEvent");
