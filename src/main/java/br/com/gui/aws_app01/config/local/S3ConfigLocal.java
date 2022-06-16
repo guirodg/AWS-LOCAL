@@ -29,7 +29,7 @@ public class S3ConfigLocal {
 
   private AmazonS3 amazonS3;
 
-  public S3ConfigLocal(AmazonS3 amazonS3) {
+  public S3ConfigLocal() {
     amazonS3 = getAmazonS3();
 
     createBucket();
@@ -50,7 +50,7 @@ public class S3ConfigLocal {
 
     this.amazonS3 = AmazonS3ClientBuilder.standard()
         .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(
-            "http://localhost:4566", Regions.SA_EAST_1.getName()))
+            "http://localhost:4566", Regions.US_EAST_1.getName()))
 
         .withCredentials(new AWSStaticCredentialsProvider(credentials))
         .enablePathStyleAccess()
@@ -62,17 +62,14 @@ public class S3ConfigLocal {
     this.amazonS3.createBucket(BUCKET_NAME);
   }
 
-  @Bean
-  public AmazonS3 amazonS3Client() {
-    return this.amazonS3;
-  }
+
 
   private AmazonSNS getAmazonSNS() {
     return AmazonSNSClient.builder()
         .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration
             (
                 "http://localhost:4566",
-                Regions.SA_EAST_1.getName()
+                Regions.US_EAST_1.getName()
             )
         )
         .withCredentials(new DefaultAWSCredentialsProviderChain())
@@ -84,7 +81,7 @@ public class S3ConfigLocal {
         .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration
             (
                 "http://localhost:4566",
-                Regions.SA_EAST_1.getName()
+                Regions.US_EAST_1.getName()
             )
         )
         .withCredentials(new DefaultAWSCredentialsProviderChain())
@@ -110,5 +107,10 @@ public class S3ConfigLocal {
 
     amazonS3.setBucketNotificationConfiguration(BUCKET_NAME, new BucketNotificationConfiguration()
         .addConfiguration("putObject", topicConfiguration));
+  }
+
+  @Bean
+  public AmazonS3 amazonS3Client() {
+    return this.amazonS3;
   }
 }

@@ -61,7 +61,7 @@ dependencies {
     implementation 'org.mariadb.jdbc:mariadb-java-client:3.0.5'
 
     //	TEST-h2 //
-//    implementation 'com.h2database:h2:2.1.212'
+    implementation 'com.h2database:h2:2.1.212'
 
     // SNS
     implementation 'com.amazonaws:aws-java-sdk-sns:1.12.232'
