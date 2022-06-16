@@ -24,7 +24,7 @@ public class SnsCreate {
         .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration
             (
                 "http://localhost:4566",
-                Regions.SA_EAST_1.getName()
+                Regions.US_EAST_1.getName()
             )
         )
         .withCredentials(new DefaultAWSCredentialsProviderChain())
