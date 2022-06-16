@@ -1,0 +1,7 @@
+{
+    "invoiceNumber": "ABC-123",
+    "customerName": "gui",
+    "totalValue": 100,
+    "productId": 1,
+    "quantity": 2
+}
